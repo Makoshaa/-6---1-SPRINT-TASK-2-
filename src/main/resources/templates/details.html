@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html">
+
+
+    <div layout:fragment="siteContent">
+        <div class="row" th:if="${zayavka!=null}">
+          <div th:unless="${zayavka.isHandled()}">
+            <h4 class="text-center" style="color: red">*** Новая необработанная заявка ***</h4>
+            <div class="col-6 mx-auto">
+              <form action="/handle-request" method="post">
+                <input type="hidden" name="id" th:value="${zayavka.id}">
+                <div class="row">
+                  <div class="col-12">
+                    <label>ФИО :</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <input type="text" class="form-control"  name="userName" th:value="${zayavka.getUserName()}" required readonly>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <label>Курс :</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <input type="text" class="form-control"  name="courseName" readonly th:value="${zayavka.getCourseName()}">
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <label>Телефон:</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <input type="number" class="form-control" th:value="${zayavka.getPhone()}" name="phone" required readonly>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <label>Комментарии :</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <textarea class="form-control" name="commentary" rows="10"  readonly th:text="${zayavka.getCommentary()}"></textarea>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <button class="btn btn btn-success">Обработать заявку</button>
+                    <button type="button" class="btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить заявку</button>
+                  </div>
+                </div>
+              </form>
+              <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                   tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" th:if="${zayavka!=null}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form th:action="@{'/delete-request'}" method="post">
+                      <input type="hidden" name="id" th:value="${zayavka.getId()}">
+                      <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">Подтверждение</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <h3 class="text-center">Вы действительно хотите удалить заявку?</h3>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                      <button  class="btn btn-success">Да</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div th:if="${zayavka.isHandled()}">
+            <h4 class="text-center" style="color: seagreen">Обработанная заявка</h4>
+            <div class="col-6 mx-auto">
+              <form action="/save-music" method="post">
+                <input type="hidden" name="id" th:value="${zayavka.id}">
+                <div class="row">
+                  <div class="col-12">
+                    <label>ФИО :</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <input type="text" class="form-control"  name="userName" th:value="${zayavka.getUserName()}" required readonly>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <label>Курс :</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <input type="text" class="form-control"  name="courseName" readonly th:value="${zayavka.getCourseName()}">
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <label>Телефон:</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <input type="number" class="form-control" th:value="${zayavka.getPhone()}" name="phone" required readonly>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <label>Комментарии :</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <textarea class="form-control" name="commentary" rows="10"  readonly th:text="${zayavka.getCommentary()}"></textarea>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <button type="button" class="btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal2">Удалить заявку</button>
+                  </div>
+                </div>
+              </form>
+              <div class="modal fade" id="deleteModal2" data-bs-backdrop="static" data-bs-keyboard="false"
+                   tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true" th:if="${zayavka!=null}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form th:action="@{'/delete-request'}" method="post">
+                      <input type="hidden" name="id" th:value="${zayavka.getId()}">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel2">Подтверждение</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <h3 class="text-center">Вы действительно хотите удалить заявку?</h3>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                        <button  class="btn btn-success">Да</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</html>
